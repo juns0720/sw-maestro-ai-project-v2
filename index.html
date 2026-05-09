@@ -1,0 +1,247 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NewPick Prototype</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell" aria-label="NewPick 프로토타입">
+      <section class="phone-frame">
+        <a class="component-link" href="./button-variants.html" aria-label="컴포넌트 화면 보기">
+          UI
+        </a>
+
+        <div class="status-area">
+          <span>9:41</span>
+          <span class="status-icons">5G 100%</span>
+        </div>
+
+        <div class="content screen screen-welcome is-active" id="welcomeScreen">
+          <header class="brand-block">
+            <img
+              class="brand-mark"
+              src="./assets/newspick.png"
+              alt="NewPick 로고"
+            />
+            <h1>NewPick</h1>
+            <p class="intro">
+              AI가 오늘의 뉴스를 골라 짧게 요약하고 퀴즈로 정리해요.
+            </p>
+          </header>
+        </div>
+
+        <section
+          class="content screen screen-category"
+          id="categoryScreen"
+          aria-label="관심 카테고리 선택"
+        >
+          <button class="back-button" type="button" id="backButton" aria-label="이전 화면">
+            ‹
+          </button>
+
+          <header class="category-header">
+            <p class="step-label">맞춤 설정</p>
+            <h2>관심 있는 뉴스를 골라주세요</h2>
+            <p>
+              선택한 분야를 중심으로 요약, 퀴즈, 데일리 리포트를 준비할게요.
+            </p>
+          </header>
+
+          <div class="category-list" role="group" aria-label="뉴스 카테고리">
+            <button class="category-card is-selected" type="button" data-category="테크">
+              <span class="category-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="6" y="6" width="12" height="12" rx="3"></rect>
+                  <path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path>
+                  <path d="M10 12h.01M12 10h.01M14 12h.01"></path>
+                </svg>
+              </span>
+              <span class="category-copy">
+                <strong>테크</strong>
+                <small>AI와 기술 흐름을 한눈에</small>
+              </span>
+              <span class="check-mark" aria-hidden="true">✓</span>
+            </button>
+
+            <button class="category-card" type="button" data-category="경제">
+              <span class="category-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="6.5" cy="17.5" r="3"></circle>
+                  <path d="M4 13l4-4 4 3 6-7"></path>
+                  <path d="M15 5h3v3"></path>
+                </svg>
+              </span>
+              <span class="category-copy">
+                <strong>경제</strong>
+                <small>돈과 시장의 움직임을 쉽게</small>
+              </span>
+              <span class="check-mark" aria-hidden="true">✓</span>
+            </button>
+
+            <button class="category-card" type="button" data-category="정책">
+              <span class="category-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="3.25" y="3.25" width="17.5" height="17.5" rx="4"></rect>
+                  <path d="M7.25 10.25h5.5"></path>
+                  <path d="M7.25 15.25l2.75 2.75 6.75-7.5"></path>
+                </svg>
+              </span>
+              <span class="category-copy">
+                <strong>정책</strong>
+                <small>정책 변화와 사회 방향을 이해해요</small>
+              </span>
+              <span class="check-mark" aria-hidden="true">✓</span>
+            </button>
+
+            <button class="category-card" type="button" data-category="이슈">
+              <span class="category-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M5 6.5h11a4 4 0 0 1 4 4v1.5a4 4 0 0 1-4 4h-5l-4.5 3v-3H5a4 4 0 0 1-4-4v-1.5a4 4 0 0 1 4-4z"></path>
+                  <circle cx="18.5" cy="5.5" r="2.5"></circle>
+                </svg>
+              </span>
+              <span class="category-copy">
+                <strong>이슈</strong>
+                <small>지금 사람들이 주목하는 이야기</small>
+              </span>
+              <span class="check-mark" aria-hidden="true">✓</span>
+            </button>
+          </div>
+        </section>
+
+        <section class="content screen screen-app" id="appScreen" aria-label="NewPick 앱 화면">
+          <section class="app-page is-active" data-page="home" aria-label="홈">
+            <p class="step-label">Home</p>
+            <h2>오늘의 뉴스</h2>
+            <p>AI가 관심 분야의 주요 뉴스를 정리하고 있어요.</p>
+
+            <div class="home-loading" aria-live="polite">
+              <article class="loading-card" aria-label="뉴스 로딩 상태">
+                <div class="loading-orbit" aria-hidden="true">
+                  <span></span>
+                </div>
+                <div>
+                  <h3>
+                    오늘의 뉴스를 정리 중이에요<span class="typing-dots" aria-hidden="true"></span>
+                  </h3>
+                  <p>잠시만 기다리면 오늘의 핵심을 정리해드릴게요.</p>
+                </div>
+
+                <ol class="loading-steps">
+                  <li class="is-done">관심 카테고리 확인</li>
+                  <li class="is-active">주요 뉴스 수집</li>
+                  <li>AI 요약 생성</li>
+                </ol>
+              </article>
+
+              <div class="news-skeletons" aria-hidden="true">
+                <div class="news-skeleton">
+                  <span></span>
+                  <strong></strong>
+                  <p></p>
+                </div>
+                <div class="news-skeleton">
+                  <span></span>
+                  <strong></strong>
+                  <p></p>
+                </div>
+              </div>
+            </div>
+
+            <div class="news-feed" aria-label="오늘의 뉴스 목록">
+              <article class="news-card">
+                <div class="news-meta">
+                  <span>테크</span>
+                  <time>오늘 09:20</time>
+                </div>
+                <h3>AI 서비스들이 뉴스 요약 기능을 빠르게 고도화하고 있어요</h3>
+                <p>
+                  주요 플랫폼들이 개인 맞춤형 요약과 검색 경험을 강화하며 정보 소비 방식을 바꾸고 있어요.
+                </p>
+              </article>
+
+              <article class="news-card">
+                <div class="news-meta">
+                  <span>경제</span>
+                  <time>오늘 08:45</time>
+                </div>
+                <h3>시장 변동성이 커지며 투자자들이 실적 발표에 주목하고 있어요</h3>
+                <p>
+                  금리 전망과 기업 실적이 함께 움직이며 이번 주 시장의 핵심 변수로 떠오르고 있어요.
+                </p>
+              </article>
+
+              <article class="news-card">
+                <div class="news-meta">
+                  <span>이슈</span>
+                  <time>오늘 08:10</time>
+                </div>
+                <h3>오늘 사람들이 많이 이야기한 사회 이슈를 한눈에 모았어요</h3>
+                <p>
+                  온라인에서 확산된 주요 논의와 배경을 짧게 정리해 흐름을 빠르게 파악할 수 있어요.
+                </p>
+              </article>
+            </div>
+          </section>
+
+          <section class="app-page" data-page="quiz" aria-label="퀴즈">
+            <p class="step-label">Quiz</p>
+            <h2>뉴스 퀴즈</h2>
+            <p>읽은 뉴스를 바탕으로 가볍게 확인하는 퀴즈 화면이에요.</p>
+          </section>
+
+          <section class="app-page" data-page="report" aria-label="리포트">
+            <p class="step-label">Report</p>
+            <h2>데일리 리포트</h2>
+            <p>하루 동안의 흐름을 정리해서 보여줄 리포트 화면이에요.</p>
+          </section>
+        </section>
+
+        <footer class="welcome-actions" id="appActions">
+          <button class="primary-button" type="button" id="startButton">
+            서비스 시작하기
+          </button>
+          <p class="action-helper" id="actionHelper"></p>
+        </footer>
+
+        <nav class="bottom-nav" id="bottomNav" aria-label="하단 내비게이션" hidden>
+          <button class="nav-item is-active" type="button" data-target="home">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <path d="M4 10.5 12 4l8 6.5"></path>
+                <path d="M6.5 10v9h11v-9"></path>
+                <path d="M10 19v-5h4v5"></path>
+              </svg>
+            </span>
+            홈
+          </button>
+          <button class="nav-item" type="button" data-target="quiz">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="8"></circle>
+                <path d="M9.75 9.5a2.4 2.4 0 0 1 4.55 1.05c0 1.55-1.35 2.05-2.05 2.72-.36.34-.5.67-.5 1.23"></path>
+                <path d="M12 17h.01"></path>
+              </svg>
+            </span>
+            퀴즈
+          </button>
+          <button class="nav-item" type="button" data-target="report">
+            <span class="nav-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24">
+                <rect x="6" y="4" width="12" height="16" rx="3"></rect>
+                <path d="M9 9h6"></path>
+                <path d="M9 13h6"></path>
+                <path d="M9 17h4"></path>
+              </svg>
+            </span>
+            리포트
+          </button>
+        </nav>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
