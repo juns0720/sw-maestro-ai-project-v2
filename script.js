@@ -170,22 +170,72 @@ const showAppPage = (pageName = "home", animationName = "page-enter-soft") => {
 const clearHomeLoading = () => {
   if (homeLoadingTimer) {
     clearTimeout(homeLoadingTimer);
+    cancelAnimationFrame(homeLoadingTimer);
     homeLoadingTimer = null;
   }
 };
 
 const startHomeLoading = () => {
   const homePage = document.querySelector('[data-page="home"]');
+  if (!homePage) return;
 
   clearHomeLoading();
   homePage.classList.remove("is-loaded");
   homePage.classList.add("is-loading");
 
-  homeLoadingTimer = setTimeout(() => {
-    homePage.classList.remove("is-loading");
-    homePage.classList.add("is-loaded");
-    homeLoadingTimer = null;
-  }, 3000);
+  homePage.querySelectorAll(".loading-step").forEach((step) => {
+    step.classList.remove("is-active", "is-done");
+    const cur = step.querySelector("[data-cur]");
+    const bar = step.querySelector(".loading-step-bar span");
+    if (cur) cur.textContent = "0";
+    if (bar) bar.style.width = "0%";
+  });
+
+  const stepEls = homePage.querySelectorAll(".loading-step");
+  const plan = [
+    { el: stepEls[0], total: 12, duration: 2200 },
+    { el: stepEls[1], total: 8, duration: 2600 },
+  ];
+
+  let pi = 0;
+  const runStep = () => {
+    if (pi >= plan.length) {
+      homePage.classList.remove("is-loading");
+      homePage.classList.add("is-loaded");
+      homeLoadingTimer = null;
+      return;
+    }
+    const { el, total, duration } = plan[pi];
+    if (!el) {
+      pi += 1;
+      runStep();
+      return;
+    }
+    el.classList.add("is-active");
+    const cur = el.querySelector("[data-cur]");
+    const bar = el.querySelector(".loading-step-bar span");
+    const start = performance.now();
+
+    const tick = (now) => {
+      const t = Math.min(1, (now - start) / duration);
+      const eased = 1 - Math.pow(1 - t, 3);
+      const value = Math.min(total, Math.round(eased * total));
+      if (cur) cur.textContent = String(value);
+      if (bar) bar.style.width = (eased * 100).toFixed(1) + "%";
+      if (t < 1) {
+        homeLoadingTimer = requestAnimationFrame(tick);
+      } else {
+        if (cur) cur.textContent = String(total);
+        if (bar) bar.style.width = "100%";
+        el.classList.remove("is-active");
+        el.classList.add("is-done");
+        pi += 1;
+        homeLoadingTimer = setTimeout(runStep, 240);
+      }
+    };
+    homeLoadingTimer = requestAnimationFrame(tick);
+  };
+  runStep();
 };
 
 const renderQuizQuestion = () => {

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NewPick Prototype</title>
-    <link rel="stylesheet" href="./styles.css?v=quizresult2" />
+    <link rel="stylesheet" href="./styles.css?v=cplus3" />
   </head>
   <body>
     <main class="app-shell" aria-label="NewPick 프로토타입">
@@ -130,9 +130,20 @@
                 </div>
 
                 <ol class="loading-steps">
-                  <li class="is-done">관심 카테고리 확인</li>
-                  <li class="is-active">주요 뉴스 수집</li>
-                  <li>AI 요약 생성</li>
+                  <li class="loading-step" data-step="collect">
+                    <div class="loading-step-main">
+                      <span class="loading-step-label">주요 뉴스 수집</span>
+                      <span class="loading-step-count"><span data-cur>0</span><span class="sep">/</span><span data-total>12</span> 매체</span>
+                    </div>
+                    <div class="loading-step-bar"><span></span></div>
+                  </li>
+                  <li class="loading-step" data-step="summarize">
+                    <div class="loading-step-main">
+                      <span class="loading-step-label">AI 요약 생성</span>
+                      <span class="loading-step-count"><span data-cur>0</span><span class="sep">/</span><span data-total>8</span> 기사</span>
+                    </div>
+                    <div class="loading-step-bar"><span></span></div>
+                  </li>
                 </ol>
               </article>
 
@@ -325,87 +336,91 @@
           </section>
 
           <section class="app-page" data-page="report" aria-label="리포트">
-            <p class="step-label">5월 10일</p>
-            <h2>데일리 리포트</h2>
+            <div class="report-top">
+              <h1 class="report-date">5월 10일</h1>
+              <span class="report-update">09:30 업데이트</span>
+            </div>
+            <p class="report-day">화요일 · 데일리 리포트</p>
 
-            <!-- 오늘 하루 한 줄 브리핑 -->
-            <div class="report-briefing">
-              <span class="report-briefing-label">AI 브리핑</span>
-              <p>AI 자동화와 통상 압박, 인구 위기가 동시에 부상한 하루였습니다.</p>
+            <div class="report-briefing-v2">
+              <span class="briefing-icon" aria-hidden="true">AI</span>
+              <div>
+                <span class="briefing-label">BRIEFING</span>
+                <p>AI 자동화와 통상 압박, 인구 위기가 동시에 부상한 하루였습니다.</p>
+              </div>
             </div>
 
-            <!-- 오늘의 흐름 -->
-            <section class="report-block" aria-label="오늘의 흐름">
-              <p class="report-section-label">오늘의 흐름</p>
-              <div class="report-flow">
-                <div class="flow-item">
-                  <span class="news-category">테크</span>
-                  <p>AI 에이전트 경쟁이 업무 자동화 시장으로 본격 확산</p>
-                </div>
-                <div class="flow-item">
-                  <span class="news-category issue-badge--economy">경제</span>
-                  <p>미국 관세 여파로 반도체·자동차 수출 기업 부담 가중</p>
-                </div>
-                <div class="flow-item">
-                  <span class="news-category issue-badge--social">이슈</span>
-                  <p>합계출산율 역대 최저, 정부 전담 부처 신설로 대응</p>
-                </div>
-              </div>
-            </section>
+            <div class="tl-head">
+              <span>가장 많이 다뤄진 순</span>
+              <span class="tl-head-line"></span>
+              <span class="tl-head-count">3건</span>
+            </div>
 
-            <!-- 헤드라인 -->
-            <section class="report-block" aria-label="오늘의 헤드라인">
-              <p class="report-section-label">오늘의 헤드라인</p>
-              <article class="headline-card">
-                <div class="headline-meta">
-                  <span class="news-category">테크</span>
-                  <span class="cluster-badge">4개 매체 보도</span>
-                  <time class="headline-time">09:20</time>
-                </div>
-                <h3>오픈AI·앤트로픽, AI 에이전트 경쟁 본격화... 작업 자동화 시대 가시화</h3>
-                <p>이메일 작성, 코드 실행, 파일 관리 등 실제 작업을 AI가 직접 처리하는 서비스가 빠르게 확산되고 있어요.</p>
-                <div class="news-keywords">
-                  <span>AI 에이전트</span>
-                  <span>오픈AI</span>
-                  <span>자동화</span>
-                </div>
-              </article>
-            </section>
+            <div class="timeline">
+              <div class="tl-rail" aria-hidden="true"></div>
 
-            <!-- 주요 이슈 -->
-            <section class="report-block" aria-label="주요 이슈">
-              <p class="report-section-label">주요 이슈</p>
-              <div class="sub-article-grid">
-                <article class="sub-article-card">
-                  <div class="sub-article-meta">
-                    <span class="news-category issue-badge--economy">경제</span>
-                    <span class="cluster-badge cluster-badge--muted">3개 매체</span>
-                  </div>
-                  <h4>미국 관세 인상 여파... 반도체·자동차 수출 기업 부담 가중</h4>
-                </article>
-                <article class="sub-article-card">
-                  <div class="sub-article-meta">
-                    <span class="news-category issue-badge--social">이슈</span>
-                    <span class="cluster-badge cluster-badge--muted">2개 매체</span>
-                  </div>
-                  <h4>합계출산율 0.75명 역대 최저... 인구전략기획부 신설 추진</h4>
+              <div class="tl-item tl-item--big">
+                <div class="tl-node tl-node--big" style="--c:#ff8a3d"></div>
+                <span class="tl-time">오늘 09:20 · 가장 많이 다뤄진 이슈</span>
+                <article class="tl-card tl-card--big">
+                  <div class="tl-cat" style="--c:#ff8a3d">● 테크</div>
+                  <h3>오픈AI·앤트로픽, AI 에이전트 경쟁 본격화... 작업 자동화 시대 가시화</h3>
+                  <p>이메일 작성, 코드 실행, 파일 관리 등 실제 작업을 AI가 직접 처리하는 서비스가 빠르게 확산되고 있어요.</p>
+                  <span class="src-tag">
+                    <span class="src-dots" style="--c:#ff8a3d"><span></span><span></span><span></span><span></span></span>
+                    4개 매체가 동시에 보도
+                  </span>
                 </article>
               </div>
-            </section>
 
-            <!-- 키워드 -->
-            <section class="report-keywords" aria-label="오늘의 주요 키워드">
-              <p class="report-section-label">오늘의 주요 키워드</p>
-              <div class="keyword-cloud">
-                <span>AI 에이전트</span>
-                <span>오픈AI</span>
-                <span>자동화</span>
-                <span>미국 관세</span>
-                <span>수출</span>
-                <span>출산율</span>
-                <span>저출생</span>
+              <div class="tl-item">
+                <div class="tl-node" style="--c:#4f9cf9"></div>
+                <span class="tl-time">오늘 08:45</span>
+                <article class="tl-card">
+                  <div class="tl-cat" style="--c:#4f9cf9">● 경제</div>
+                  <div class="tl-title">미국 관세 인상 여파... 반도체·자동차 수출 기업 부담 가중</div>
+                  <div class="tl-meta">3개 매체 보도</div>
+                </article>
               </div>
-            </section>
+
+              <div class="tl-item">
+                <div class="tl-node" style="--c:#9b7cf8"></div>
+                <span class="tl-time">오늘 08:10</span>
+                <article class="tl-card">
+                  <div class="tl-cat" style="--c:#9b7cf8">● 이슈</div>
+                  <div class="tl-title">합계출산율 0.75명 역대 최저... 인구전략기획부 신설 추진</div>
+                  <div class="tl-meta">2개 매체 보도</div>
+                </article>
+              </div>
+            </div>
+
+            <div class="flow-head">
+              <span>오늘의 흐름</span>
+              <span class="flow-head-line"></span>
+              <span class="flow-head-sub">카테고리별 한 줄</span>
+            </div>
+            <div class="flow-list-v2">
+              <div class="flow-row"><span class="flow-cat" style="--c:#ff8a3d">테크</span><span class="flow-text">AI 에이전트 경쟁이 업무 자동화 시장으로 본격 확산</span></div>
+              <div class="flow-row"><span class="flow-cat" style="--c:#4f9cf9">경제</span><span class="flow-text">미국 관세 여파로 반도체·자동차 수출 기업 부담 가중</span></div>
+              <div class="flow-row"><span class="flow-cat" style="--c:#9b7cf8">이슈</span><span class="flow-text">합계출산율 역대 최저, 정부 전담 부처 신설로 대응</span></div>
+            </div>
+
+            <div class="kw-title">오늘의 키워드</div>
+            <div class="kw-cloud-v2">
+              <span data-w="9">AI 에이전트</span>
+              <span data-w="7">미국 관세</span>
+              <span data-w="6">오픈AI</span>
+              <span data-w="5">출산율</span>
+              <span data-w="4">자동화</span>
+              <span data-w="3">수출</span>
+              <span data-w="3">저출생</span>
+              <span data-w="2">반도체</span>
+            </div>
+
+            <div class="report-footer-mark">
+              <span class="footer-check" aria-hidden="true">✓</span>
+              <span>오늘 따라잡기 끝 — 내일 09:30에 다시 만나요</span>
+            </div>
           </section>
         </section>
 
