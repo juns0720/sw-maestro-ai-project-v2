@@ -422,6 +422,63 @@
               <span>오늘 따라잡기 끝 — 내일 09:30에 다시 만나요</span>
             </div>
           </section>
+
+          <!-- 챗 페이지 -->
+          <section class="app-page chat-page" data-page="chat" aria-label="AI 어시스턴트">
+            <header class="chat-header">
+              <div class="chat-header-info">
+                <span class="chat-header-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a8 8 0 0 1 8 8c0 5-8 12-8 12S4 15 4 10a8 8 0 0 1 8-8z"/>
+                    <circle cx="12" cy="10" r="2.5" fill="currentColor" stroke="none"/>
+                  </svg>
+                </span>
+                <div>
+                  <p class="chat-header-title">AI 어시스턴트</p>
+                  <p class="chat-header-sub">기사·리포트 검색</p>
+                </div>
+              </div>
+              <button class="chat-reset-btn" type="button" id="chatResetBtn" aria-label="대화 초기화" hidden>
+                <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15.5 4.5A7.5 7.5 0 1 1 5.5 14"/>
+                  <path d="M5 10V5.5H9.5"/>
+                </svg>
+              </button>
+            </header>
+
+            <div class="chat-body" id="chatBody">
+              <!-- 초기 상태 -->
+              <div class="chat-intro" id="chatIntro">
+                <div class="chat-intro-icon" aria-hidden="true">
+                  <svg viewBox="0 0 40 40" fill="none">
+                    <circle cx="20" cy="20" r="20" fill="#fff0e7"/>
+                    <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8" stroke="#ff8a3d" stroke-width="2" stroke-linecap="round"/>
+                    <circle cx="20" cy="20" r="2.5" fill="#ff8a3d"/>
+                  </svg>
+                </div>
+                <p class="chat-intro-title">뉴스가 궁금하면 물어보세요</p>
+                <p class="chat-intro-desc">수집된 기사와 리포트를 바탕으로<br>답변해 드릴게요.</p>
+                <div class="chat-suggestions">
+                  <button class="chat-suggestion-chip" type="button" data-msg="어제 테크 뉴스 뭐 있었어?">어제 테크 뉴스 뭐 있었어?</button>
+                  <button class="chat-suggestion-chip" type="button" data-msg="AI 관련 기사 찾아줘">AI 관련 기사 찾아줘</button>
+                  <button class="chat-suggestion-chip" type="button" data-msg="이번주 경제 흐름은?">이번주 경제 흐름은?</button>
+                  <button class="chat-suggestion-chip" type="button" data-msg="오픈AI가 최근에 뭐 발표했어?">오픈AI가 최근에 뭐 발표했어?</button>
+                </div>
+              </div>
+
+              <!-- 메시지는 JS로 동적 생성 -->
+              <div class="chat-messages" id="chatMessages" hidden></div>
+            </div>
+
+            <div class="chat-input-bar">
+              <input class="chat-input" type="text" placeholder="궁금한 뉴스를 물어보세요" id="chatInput" autocomplete="off"/>
+              <button class="chat-send-btn" type="button" id="chatSendBtn" aria-label="전송">
+                <svg viewBox="0 0 20 20" fill="none">
+                  <path d="M17 10 3 4l3 6-3 6 14-6z" fill="currentColor"/>
+                </svg>
+              </button>
+            </div>
+          </section>
         </section>
 
         <footer class="welcome-actions" id="appActions">
@@ -441,6 +498,13 @@
               </svg>
             </span>
             홈
+          </button>
+          <button class="nav-item nav-item--chat" type="button" data-target="chat">
+            <span class="nav-icon nav-icon--chat" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </span>
           </button>
           <button class="nav-item" type="button" data-target="report">
             <span class="nav-icon" aria-hidden="true">
