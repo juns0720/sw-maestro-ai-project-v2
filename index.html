@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>NewPick Prototype</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=quizresult2" />
   </head>
   <body>
     <main class="app-shell" aria-label="NewPick 프로토타입">
@@ -153,43 +153,175 @@
             <div class="news-feed" aria-label="오늘의 뉴스 목록">
               <article class="news-card">
                 <div class="news-meta">
-                  <span>테크</span>
-                  <time>오늘 09:20</time>
+                  <span class="news-category">테크</span>
+                  <span class="news-source">ZDNet Korea</span>
+                  <time>09:20</time>
                 </div>
-                <h3>AI 서비스들이 뉴스 요약 기능을 빠르게 고도화하고 있어요</h3>
-                <p>
-                  주요 플랫폼들이 개인 맞춤형 요약과 검색 경험을 강화하며 정보 소비 방식을 바꾸고 있어요.
+                <h3>AI 검색 경쟁 격화... 포털·빅테크 요약 기능 고도화</h3>
+                <p class="news-summary">
+                  주요 플랫폼들이 검색 결과를 문장형 답변으로 제공하는 기능을 확대하고 있어요.
+                  개인화 추천과 출처 표시 방식이 서비스 경쟁의 핵심으로 떠오르고 있습니다.
                 </p>
+                <div class="news-keywords" aria-label="핵심 키워드">
+                  <span>AI 검색</span>
+                  <span>요약</span>
+                  <span>플랫폼</span>
+                </div>
+                <div class="news-actions">
+                  <button type="button" data-detail-target="tech">상세 보기</button>
+                </div>
               </article>
 
               <article class="news-card">
                 <div class="news-meta">
-                  <span>경제</span>
-                  <time>오늘 08:45</time>
+                  <span class="news-category">경제</span>
+                  <span class="news-source">연합뉴스</span>
+                  <time>08:45</time>
                 </div>
-                <h3>시장 변동성이 커지며 투자자들이 실적 발표에 주목하고 있어요</h3>
-                <p>
-                  금리 전망과 기업 실적이 함께 움직이며 이번 주 시장의 핵심 변수로 떠오르고 있어요.
+                <h3>환율 변동성 확대, 수입 물가 부담 다시 커지나</h3>
+                <p class="news-summary">
+                  원화 약세가 이어지며 에너지와 식품 가격에 영향을 줄 수 있다는 분석이 나왔어요.
+                  시장은 이번 주 금리 전망과 기업 실적 발표를 함께 주시하고 있습니다.
                 </p>
+                <div class="news-keywords" aria-label="핵심 키워드">
+                  <span>환율</span>
+                  <span>물가</span>
+                  <span>금리</span>
+                </div>
+                <div class="news-actions">
+                  <button type="button" data-detail-target="economy">상세 보기</button>
+                </div>
               </article>
 
               <article class="news-card">
                 <div class="news-meta">
-                  <span>이슈</span>
-                  <time>오늘 08:10</time>
+                  <span class="news-category">이슈</span>
+                  <span class="news-source">한겨레</span>
+                  <time>08:10</time>
                 </div>
-                <h3>오늘 사람들이 많이 이야기한 사회 이슈를 한눈에 모았어요</h3>
-                <p>
-                  온라인에서 확산된 주요 논의와 배경을 짧게 정리해 흐름을 빠르게 파악할 수 있어요.
+                <h3>청년 주거 지원 개편 논의 본격화... 대상·예산 쟁점</h3>
+                <p class="news-summary">
+                  정부와 지자체가 청년층 주거비 부담 완화를 위한 제도 개편을 검토하고 있어요.
+                  지원 대상과 대출 조건, 예산 규모가 향후 논의의 핵심 쟁점입니다.
                 </p>
+                <div class="news-keywords" aria-label="핵심 키워드">
+                  <span>청년 주거</span>
+                  <span>정책</span>
+                  <span>예산</span>
+                </div>
+                <div class="news-actions">
+                  <button type="button" data-detail-target="issue">상세 보기</button>
+                </div>
               </article>
             </div>
           </section>
 
-          <section class="app-page" data-page="quiz" aria-label="퀴즈">
-            <p class="step-label">Quiz</p>
-            <h2>뉴스 퀴즈</h2>
-            <p>읽은 뉴스를 바탕으로 가볍게 확인하는 퀴즈 화면이에요.</p>
+          <section class="app-page detail-page" data-page="detail" aria-label="기사 상세">
+            <button class="detail-back" type="button" id="detailBackButton" aria-label="뉴스 목록으로 돌아가기">
+              ‹
+            </button>
+
+            <article class="detail-article">
+              <header class="detail-hero">
+                <div class="detail-meta">
+                  <span class="news-category">테크</span>
+                  <span>ZDNet Korea</span>
+                  <time>오늘 09:20</time>
+                </div>
+
+                <h2>AI 검색 경쟁 격화... 포털·빅테크 요약 기능 고도화</h2>
+
+                <div class="news-keywords detail-keywords" aria-label="핵심 키워드">
+                  <span>AI 검색</span>
+                  <span>뉴스 요약</span>
+                  <span>출처 신뢰도</span>
+                </div>
+
+                <div class="source-strip">
+                  <span>원문 기반 AI 정리</span>
+                  <a href="#" aria-label="원문 기사 보기">원문 보기</a>
+                </div>
+              </header>
+
+              <section class="detail-section summary-section">
+                <p class="detail-label">핵심만 보기</p>
+                <ol class="summary-list">
+                  <li>
+                    <span>1</span>
+                    <p>AI 검색 서비스가 검색 결과를 요약형 답변으로 보여주는 기능을 강화하고 있어요.</p>
+                  </li>
+                  <li>
+                    <span>2</span>
+                    <p>사용자는 긴 기사 목록을 보기 전에 핵심 흐름과 배경을 먼저 확인할 수 있습니다.</p>
+                  </li>
+                  <li>
+                    <span>3</span>
+                    <p>앞으로는 답변 품질뿐 아니라 출처 표시와 개인화 추천이 중요한 경쟁 포인트가 될 가능성이 커요.</p>
+                  </li>
+                </ol>
+              </section>
+
+              <section class="detail-section insight-block">
+                <p class="detail-label">왜 중요해?</p>
+                <p>
+                  검색 결과를 단순히 나열하는 방식에서, AI가 먼저 흐름을 정리해주는 방식으로 뉴스 소비가 바뀌고 있어요.
+                  사용자는 요약을 먼저 보고 필요한 경우 원문으로 확인할 수 있습니다.
+                </p>
+              </section>
+
+              <section class="detail-section context-section">
+                <p class="detail-label">조금 더 알기</p>
+                <div class="context-list">
+                  <div>
+                    <strong>배경</strong>
+                    <span>검색 서비스가 링크 목록 중심에서 답변형 화면으로 이동하고 있어요.</span>
+                  </div>
+                  <div>
+                    <strong>영향</strong>
+                    <span>요약이 편해질수록 출처와 신뢰도를 함께 보여주는 UI가 더 중요해집니다.</span>
+                  </div>
+                </div>
+              </section>
+
+              <button class="detail-quiz-button" type="button" id="openInlineQuizButton">퀴즈로 이해도 확인하기</button>
+
+              <section class="inline-quiz" id="inlineQuiz" aria-label="기사 이해도 OX 퀴즈" hidden>
+                <div class="inline-quiz-head">
+                  <div>
+                    <p class="detail-label">읽은 내용 확인하기</p>
+                    <small>기사 핵심을 가볍게 체크해볼게요.</small>
+                  </div>
+                  <div class="quiz-dots" id="quizStepDots" aria-label="현재 퀴즈 진행">
+                    <span class="is-active"></span>
+                    <span></span>
+                    <span></span>
+                  </div>
+                </div>
+
+                <div class="quiz-question-block">
+                  <span id="quizQuestionLabel">Q1</span>
+                  <strong id="quizQuestion">
+                    AI 검색 서비스는 검색 결과를 요약형 답변으로 보여주는 기능을 강화하고 있다.
+                  </strong>
+                </div>
+
+                <div class="ox-actions" aria-label="O 또는 X 선택">
+                  <button type="button" data-answer="O">O</button>
+                  <button type="button" data-answer="X">X</button>
+                </div>
+
+                <div class="quiz-feedback" id="quizFeedback" hidden>
+                  <strong id="quizFeedbackTitle">맞았어요</strong>
+                  <p id="quizFeedbackText">
+                    요약에서 검색 결과를 문장형 답변으로 제공하는 기능이 확대되고 있다고 설명했어요.
+                  </p>
+                </div>
+
+                <button class="quiz-next-button" type="button" id="quizNextButton" hidden>다음 문제</button>
+
+                <div class="quiz-result-summary" id="quizResultSummary" hidden></div>
+              </section>
+            </article>
           </section>
 
           <section class="app-page" data-page="report" aria-label="리포트">
@@ -217,16 +349,6 @@
             </span>
             홈
           </button>
-          <button class="nav-item" type="button" data-target="quiz">
-            <span class="nav-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24">
-                <circle cx="12" cy="12" r="8"></circle>
-                <path d="M9.75 9.5a2.4 2.4 0 0 1 4.55 1.05c0 1.55-1.35 2.05-2.05 2.72-.36.34-.5.67-.5 1.23"></path>
-                <path d="M12 17h.01"></path>
-              </svg>
-            </span>
-            퀴즈
-          </button>
           <button class="nav-item" type="button" data-target="report">
             <span class="nav-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24">
@@ -242,6 +364,6 @@
       </section>
     </main>
 
-    <script src="./script.js"></script>
+    <script src="./script.js?v=quizresult2"></script>
   </body>
 </html>
