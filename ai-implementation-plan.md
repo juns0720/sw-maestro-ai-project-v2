@@ -313,6 +313,42 @@ LLM을 호출해 기사 요약을 만든다.
 - 핵심 키워드
 - 왜 중요한지 한 줄 설명
 - UI 표시용 짧은 요약
+- `importanceScore`: 기사의 사회적 중요도 1~10 정수 (10 = 사회 전반에 즉각적 영향, 1 = 단순 단신)
+
+프롬프트 끝에 다음을 추가한다.
+
+```text
+마지막으로 이 기사의 사회적 중요도를 1~10으로 평가하고
+importance_score 필드에 정수로 출력하시오.
+기준: 10 = 사회 전반에 즉각적 영향, 1 = 단순 단신
+```
+
+#### 4-1. EmbeddingGenerator
+
+Summarizer 직후 실행되며, 요약 텍스트를 벡터로 변환한다.
+
+역할:
+
+- 요약 문장(3~5개)을 이어붙인 텍스트를 입력으로 사용
+- OpenAI `text-embedding-3-small` 모델 호출 (출력 차원: 1536)
+- 생성된 벡터를 DB의 `embedding` 컬럼에 저장
+
+DB 요구사항:
+
+- PostgreSQL + pgvector 확장
+- `articles` 테이블에 `embedding vector(1536)`, `importance_score smallint` 컬럼 추가
+- 유사도 검색 인덱스: `CREATE INDEX ON articles USING ivfflat (embedding vector_cosine_ops)`
+
+```python
+async def embedding_generator(state: ArticleState) -> ArticleState:
+    text = " ".join(state["summary"])
+    response = await openai.embeddings.create(
+        model="text-embedding-3-small",
+        input=text
+    )
+    state["embedding"] = response.data[0].embedding
+    return state
+```
 
 #### 5. SummaryValidator
 
@@ -409,21 +445,93 @@ if validation.status == "skip":
 
 ```text
 DailyArticleLoader
+-> ArticleClusterer
 -> CategoryClusterer
 -> TrendSummarizer
--> UserActivityAggregator
 -> DailyReportGenerator
 -> ReportPersistor
 ```
 
 역할:
 
-- `DailyArticleLoader`: 오늘 수집된 기사 불러오기
+- `DailyArticleLoader`: 오늘 수집된 기사와 임베딩 불러오기
+- `ArticleClusterer`: 임베딩 유사도 기반 HDBSCAN 클러스터링으로 헤드라인/서브 기사 선정
 - `CategoryClusterer`: 카테고리별 기사 묶기
-- `TrendSummarizer`: 카테고리별 핵심 흐름 요약
-- `UserActivityAggregator`: 읽은 기사 수, 퀴즈 정답률 계산
-- `DailyReportGenerator`: 사용자에게 보여줄 리포트 문장 생성
+- `TrendSummarizer`: 카테고리별 핵심 흐름 한 줄 요약 (오늘의 흐름 섹션용)
+- `DailyReportGenerator`: AI 브리핑 한 줄 문장 생성
 - `ReportPersistor`: 리포트 저장
+
+#### ArticleClusterer 상세
+
+```python
+async def article_clusterer(state: ReportState) -> ReportState:
+    articles = await db.fetch("""
+        SELECT id, category, source, importance_score, embedding
+        FROM articles
+        WHERE DATE(published_at) = CURRENT_DATE
+          AND status = 'summarized'
+    """)
+
+    embeddings = np.array([a["embedding"] for a in articles])
+
+    # HDBSCAN 클러스터링 (min_cluster_size=2: 하루 20~30건 기준)
+    clusterer = hdbscan.HDBSCAN(min_cluster_size=2, metric="euclidean")
+    labels = clusterer.fit_predict(embeddings)
+
+    clusters = defaultdict(list)
+    for article, label in zip(articles, labels):
+        if label != -1:  # -1은 단독 기사 (노이즈)
+            clusters[label].append(article)
+
+    # 클러스터 크기(기사 수) 기준 정렬
+    ranked = sorted(clusters.values(), key=len, reverse=True)
+    state["ranked_clusters"] = ranked
+    return state
+```
+
+#### 헤드라인 및 서브 기사 선정 로직
+
+```python
+def select_headline_and_subs(ranked_clusters):
+    # 1위 클러스터에서 importance_score 최고 기사 → 헤드라인
+    headline = max(ranked_clusters[0], key=lambda a: a["importance_score"])
+    # 배지: 클러스터 내 고유 출처(source) 수 (받아쓰기 기사 제외)
+    headline_source_count = len({a["source"] for a in ranked_clusters[0]})
+
+    subs = []
+    used_categories = {headline["category"]}
+    for cluster in ranked_clusters[1:]:
+        candidate = max(cluster, key=lambda a: a["importance_score"])
+        if candidate["category"] not in used_categories:
+            subs.append({
+                "article": candidate,
+                "source_count": len({a["source"] for a in cluster})
+            })
+            used_categories.add(candidate["category"])
+        if len(subs) == 2:
+            break
+
+    return headline, headline_source_count, subs
+```
+
+"N개 매체 보도" 배지는 기사 수가 아닌 **고유 출처(source) 수** 기준으로 표시한다. 통신사 기사를 받아쓰기한 기사가 같은 클러스터에 묶이더라도 배지 수치가 과장되지 않는다.
+
+## RSS 피드 구성
+
+클러스터링 효과를 위해 같은 이슈를 여러 매체가 다루는 환경이 필요하다. 피드는 종합 매체와 전문 매체를 함께 구독한다.
+
+| 역할 | 매체 | 커버 카테고리 |
+|---|---|---|
+| 종합 (필수) | 연합뉴스, 뉴시스, 뉴스1 | 전체 |
+| 테크 전문 | ZDNet Korea, 전자신문, IT동아 | 테크 |
+| 경제 전문 | 한국경제, 매일경제, 이데일리 | 경제 |
+| 방송 | KBS, YTN | 이슈/정책 |
+
+목표: 피드 10~12개, 하루 수집 기사 20~30건.
+
+종합 매체(연합뉴스, 뉴시스 등)는 대부분의 주요 이슈를 모두 다루기 때문에, 큰 이슈일수록 자연스럽게 클러스터 크기가 커진다. 전문 매체는 해당 카테고리의 심층 기사를 보완한다.
+
+주의: 통신사 기사를 신문사가 그대로 받아쓰는 경우가 많다. Deduplicator에서 제목+출처 기준으로 1차 필터링하고, 배지 표시 시에는 고유 출처 수 기준을 사용해 과장을 방지한다.
 
 ## LangSmith 적용 방식
 
@@ -656,6 +764,14 @@ JSON 형식으로만 응답하시오.
 - 상세 상단: `title`, `source`, `publishedAt`, `originalUrl`
 - 상세 본문: `summary`, `importance`, `context`
 - 상세 퀴즈: `quiz.items`
-- 리포트: `dailyReport.headline`, `dailyReport.categories`, `dailyReport.keywords`, `userStats`
+- 리포트: `dailyReport.briefing`, `dailyReport.flow`, `dailyReport.headline`, `dailyReport.headlineSourceCount`, `dailyReport.subArticles`, `dailyReport.keywords`
 
-리포트 화면은 구현 완료됐다. 현재는 정적 예시 데이터로 채워져 있으며, 다음 단계는 실제 API 응답 형태에 맞춰 동적 데이터로 교체하는 것이다. 상태 UI(요약 중, 검토 필요 등)도 홈 카드와 상세 페이지에 추가 필요하다.
+리포트 UI는 다음 구조로 확정됐다.
+
+1. **AI 브리핑** — `briefing`: DailyReportGenerator가 생성하는 오늘 하루 한 줄 요약
+2. **오늘의 흐름** — `flow`: 카테고리별 한 줄 요약 배열 (TrendSummarizer 출력)
+3. **오늘의 헤드라인** — `headline` + `headlineSourceCount`: 가장 큰 클러스터의 최고 importance_score 기사, 고유 출처 수 배지
+4. **주요 이슈** — `subArticles`: 2~3위 클러스터에서 헤드라인과 다른 카테고리 기사 (각각 source_count 포함)
+5. **오늘의 키워드** — `keywords`: 전체 기사 키워드 빈도 집계
+
+현재는 정적 예시 데이터로 채워져 있으며, 다음 단계는 실제 API 응답 형태에 맞춰 동적 데이터로 교체하는 것이다. 상태 UI(요약 중, 검토 필요 등)도 홈 카드와 상세 페이지에 추가 필요하다.

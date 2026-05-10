@@ -328,53 +328,72 @@
             <p class="step-label">5월 10일</p>
             <h2>데일리 리포트</h2>
 
-            <div class="report-briefing-card">
-              <svg class="report-briefing-deco" viewBox="0 0 20 20" aria-hidden="true">
-                <path d="M10 1l2.39 7.26H19l-5.81 4.22 2.22 6.83L10 15.27l-5.41 4.04 2.22-6.83L1 8.26h6.61L10 1z"/>
-              </svg>
-              <p>AI 에이전트 경쟁이 가시화된 하루, 미국 관세 여파와 저출생 위기가 함께 화두였어요.</p>
+            <!-- 오늘 하루 한 줄 브리핑 -->
+            <div class="report-briefing">
+              <span class="report-briefing-label">AI 브리핑</span>
+              <p>AI 자동화와 통상 압박, 인구 위기가 동시에 부상한 하루였습니다.</p>
             </div>
 
-            <div class="report-stats">
-              <div class="stat-card">
-                <span class="stat-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <rect x="4" y="7" width="16" height="13" rx="3"/>
-                    <path d="M8 7V5a2 2 0 0 1 4 0v2"/>
-                    <path d="M8 12h5M8 15h3"/>
-                  </svg>
-                </span>
-                <strong>3</strong>
-                <span>읽은 기사</span>
-              </div>
-              <div class="stat-card stat-card--quiz">
-                <span class="stat-icon" aria-hidden="true">
-                  <svg viewBox="0 0 24 24">
-                    <circle cx="12" cy="12" r="8"/>
-                    <path d="M9 12l2 2 4-4"/>
-                  </svg>
-                </span>
-                <strong>67%</strong>
-                <span>퀴즈 정답률</span>
-              </div>
-            </div>
-
-            <section class="report-issues" aria-label="카테고리별 핵심 이슈">
-              <p class="report-section-label">카테고리별 핵심 이슈</p>
-              <div class="issue-card issue-card--tech">
-                <span class="news-category">테크</span>
-                <p>오픈AI·앤트로픽이 AI 에이전트를 공개하며 업무 자동화 시장 경쟁이 본격화되고 있어요.</p>
-              </div>
-              <div class="issue-card issue-card--economy">
-                <span class="news-category issue-badge--economy">경제</span>
-                <p>미국 상호관세 부과로 반도체·자동차·배터리 수출 기업의 원가 부담이 커지고 있어요.</p>
-              </div>
-              <div class="issue-card issue-card--social">
-                <span class="news-category issue-badge--social">이슈</span>
-                <p>합계출산율이 0.75명으로 역대 최저를 기록하며 정부의 구조적 대응 논의가 가속되고 있어요.</p>
+            <!-- 오늘의 흐름 -->
+            <section class="report-block" aria-label="오늘의 흐름">
+              <p class="report-section-label">오늘의 흐름</p>
+              <div class="report-flow">
+                <div class="flow-item">
+                  <span class="news-category">테크</span>
+                  <p>AI 에이전트 경쟁이 업무 자동화 시장으로 본격 확산</p>
+                </div>
+                <div class="flow-item">
+                  <span class="news-category issue-badge--economy">경제</span>
+                  <p>미국 관세 여파로 반도체·자동차 수출 기업 부담 가중</p>
+                </div>
+                <div class="flow-item">
+                  <span class="news-category issue-badge--social">이슈</span>
+                  <p>합계출산율 역대 최저, 정부 전담 부처 신설로 대응</p>
+                </div>
               </div>
             </section>
 
+            <!-- 헤드라인 -->
+            <section class="report-block" aria-label="오늘의 헤드라인">
+              <p class="report-section-label">오늘의 헤드라인</p>
+              <article class="headline-card">
+                <div class="headline-meta">
+                  <span class="news-category">테크</span>
+                  <span class="cluster-badge">4개 매체 보도</span>
+                  <time class="headline-time">09:20</time>
+                </div>
+                <h3>오픈AI·앤트로픽, AI 에이전트 경쟁 본격화... 작업 자동화 시대 가시화</h3>
+                <p>이메일 작성, 코드 실행, 파일 관리 등 실제 작업을 AI가 직접 처리하는 서비스가 빠르게 확산되고 있어요.</p>
+                <div class="news-keywords">
+                  <span>AI 에이전트</span>
+                  <span>오픈AI</span>
+                  <span>자동화</span>
+                </div>
+              </article>
+            </section>
+
+            <!-- 주요 이슈 -->
+            <section class="report-block" aria-label="주요 이슈">
+              <p class="report-section-label">주요 이슈</p>
+              <div class="sub-article-grid">
+                <article class="sub-article-card">
+                  <div class="sub-article-meta">
+                    <span class="news-category issue-badge--economy">경제</span>
+                    <span class="cluster-badge cluster-badge--muted">3개 매체</span>
+                  </div>
+                  <h4>미국 관세 인상 여파... 반도체·자동차 수출 기업 부담 가중</h4>
+                </article>
+                <article class="sub-article-card">
+                  <div class="sub-article-meta">
+                    <span class="news-category issue-badge--social">이슈</span>
+                    <span class="cluster-badge cluster-badge--muted">2개 매체</span>
+                  </div>
+                  <h4>합계출산율 0.75명 역대 최저... 인구전략기획부 신설 추진</h4>
+                </article>
+              </div>
+            </section>
+
+            <!-- 키워드 -->
             <section class="report-keywords" aria-label="오늘의 주요 키워드">
               <p class="report-section-label">오늘의 주요 키워드</p>
               <div class="keyword-cloud">
