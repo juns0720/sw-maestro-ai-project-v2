@@ -166,13 +166,11 @@ AI 요약이 원문과 어긋나지 않는지 확인한다.
     {
       "category": "테크",
       "summary": "AI 검색 서비스들이 요약형 답변과 출처 표시 기능을 강화하고 있다.",
-      "articleCount": 4,
       "keywords": ["AI 검색", "요약", "출처"]
     },
     {
       "category": "경제",
       "summary": "환율 변동성과 금리 전망이 시장의 주요 변수로 언급됐다.",
-      "articleCount": 3,
       "keywords": ["환율", "금리", "물가"]
     }
   ],
@@ -658,6 +656,6 @@ JSON 형식으로만 응답하시오.
 - 상세 상단: `title`, `source`, `publishedAt`, `originalUrl`
 - 상세 본문: `summary`, `importance`, `context`
 - 상세 퀴즈: `quiz.items`
-- 리포트: `dailyReport.categories`, `dailyReport.keywords`, `userStats`
+- 리포트: `dailyReport.headline`, `dailyReport.categories`, `dailyReport.keywords`, `userStats`
 
-따라서 다음 단계는 리포트 화면과 상태 UI를 추가하고, 이후 실제 API 응답 형태에 맞춰 정적 데이터를 동적 데이터로 바꾸는 것이다.
+리포트 화면은 구현 완료됐다. 현재는 정적 예시 데이터로 채워져 있으며, 다음 단계는 실제 API 응답 형태에 맞춰 동적 데이터로 교체하는 것이다. 상태 UI(요약 중, 검토 필요 등)도 홈 카드와 상세 페이지에 추가 필요하다.
