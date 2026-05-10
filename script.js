@@ -154,6 +154,8 @@ const showAppPage = (pageName = "home", animationName = "page-enter-soft") => {
     item.classList.toggle("is-active", item.dataset.target === pageName);
   });
 
+  appScreen.style.padding = pageName === "chat" ? "0" : "";
+
   if (pageName === "home") {
     startHomeLoading();
   } else {
@@ -344,6 +346,157 @@ navItems.forEach((item) => {
     history.pushState({ step: "app", page: targetPage }, "", `#${targetPage}`);
   });
 });
+
+// ── 챗 플로우 ──
+const chatIntro = document.querySelector("#chatIntro");
+const chatMessages = document.querySelector("#chatMessages");
+const chatInput = document.querySelector("#chatInput");
+const chatSendBtn = document.querySelector("#chatSendBtn");
+const chatBody = document.querySelector("#chatBody");
+
+// 시안용 캔드 응답 맵
+const CHAT_RESPONSES = {
+  "어제 테크 뉴스 뭐 있었어?": {
+    type: "articles",
+    text: "어제 테크 관련 기사 2건을 찾았어요.",
+    articles: [
+      { cat: "테크", title: "구글 I/O 2025, Gemini 2.5 Pro 공개... 멀티모달 추론 강화", meta: "전자신문 · 어제 11:40" },
+      { cat: "테크", title: "삼성전자, HBM4 개발 본격화... 엔비디아 공급 확대 기대", meta: "ZDNet Korea · 어제 09:15" },
+    ],
+  },
+  "AI 관련 기사 찾아줘": {
+    type: "articles",
+    text: "최근 수집된 AI 관련 기사 2건을 찾았어요.",
+    articles: [
+      { cat: "테크", title: "오픈AI·앤트로픽, AI 에이전트 경쟁 본격화... 작업 자동화 시대 가시화", meta: "ZDNet Korea · 오늘 09:20" },
+      { cat: "테크", title: "구글 I/O 2025, Gemini 2.5 Pro 공개... 멀티모달 추론 강화", meta: "전자신문 · 어제 11:40" },
+    ],
+  },
+  "이번주 경제 흐름은?": {
+    type: "text",
+    text: "이번주 경제 흐름은 미국 관세 정책과 환율 변동이 핵심이었어요.\n\n반도체·자동차 수출 기업들이 관세 부담으로 압박을 받고 있고, 원달러 환율은 1,380원대에서 등락을 반복했어요.",
+    source: true,
+  },
+  "오픈AI가 최근에 뭐 발표했어?": {
+    type: "text",
+    text: "오픈AI는 GPT-4o 업데이트와 함께 AI 에이전트 기능을 대폭 강화했어요. 이메일 전송, 파일 관리, 코드 실행 같은 실제 작업을 직접 처리할 수 있게 됐어요.",
+    source: true,
+  },
+};
+
+const DEFAULT_RESPONSE = {
+  type: "text",
+  text: "관련 기사를 찾고 있어요. 조금 더 구체적으로 말씀해 주시면 더 정확하게 찾아드릴 수 있어요.",
+};
+
+function scrollChatBottom() {
+  if (chatBody) chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function makeBubble(role, content) {
+  const row = document.createElement("div");
+  row.className = `chat-msg chat-msg--${role} chat-msg--enter`;
+
+  if (role === "user") {
+    row.innerHTML = `<div class="chat-bubble chat-bubble--user">${content}</div>`;
+  } else {
+    row.innerHTML = `<span class="chat-ai-avatar" aria-hidden="true">AI</span><div class="chat-bubble chat-bubble--ai">${content}</div>`;
+  }
+  return row;
+}
+
+function makeTyping() {
+  const row = document.createElement("div");
+  row.className = "chat-msg chat-msg--ai chat-msg--enter";
+  row.id = "chatTyping";
+  row.innerHTML = `
+    <span class="chat-ai-avatar" aria-hidden="true">AI</span>
+    <div class="chat-bubble chat-bubble--ai chat-typing">
+      <span></span><span></span><span></span>
+    </div>`;
+  return row;
+}
+
+function buildAIContent(response) {
+  if (response.type === "articles") {
+    const cards = response.articles
+      .map(
+        (a) => `
+      <button class="chat-article-card" type="button">
+        <span class="chat-article-cat">● ${a.cat}</span>
+        <p class="chat-article-title">${a.title}</p>
+        <span class="chat-article-meta">${a.meta}</span>
+      </button>`
+      )
+      .join("");
+    return `<p>${response.text}</p><div class="chat-article-cards">${cards}</div>`;
+  }
+
+  const lines = response.text
+    .split("\n\n")
+    .map((l) => `<p>${l}</p>`)
+    .join("");
+  const source = response.source
+    ? `<div class="chat-source-label">
+        <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="7" cy="7" r="5.5"/><path d="M7 4.5v3l1.5 1.5"/>
+        </svg>AI 요약 · 원문 기반</div>`
+    : "";
+  return lines + source;
+}
+
+function sendMessage(text) {
+  if (!text.trim() || !chatMessages) return;
+
+  // 인트로 숨김 (첫 메시지일 때만)
+  if (chatIntro && !chatIntro.hidden) {
+    chatIntro.hidden = true;
+    chatMessages.hidden = false;
+    if (chatResetBtn) chatResetBtn.hidden = false;
+  }
+
+  // 입력창 초기화
+  if (chatInput) chatInput.value = "";
+
+  // 사용자 버블
+  chatMessages.appendChild(makeBubble("user", text));
+  scrollChatBottom();
+
+  // 타이핑 인디케이터
+  const typing = makeTyping();
+  chatMessages.appendChild(typing);
+  scrollChatBottom();
+
+  // AI 응답 (1초 딜레이)
+  setTimeout(() => {
+    typing.remove();
+    const response = CHAT_RESPONSES[text] || DEFAULT_RESPONSE;
+    chatMessages.appendChild(makeBubble("ai", buildAIContent(response)));
+    scrollChatBottom();
+  }, 1000);
+}
+
+document.querySelectorAll(".chat-suggestion-chip").forEach((chip) => {
+  chip.addEventListener("click", () => sendMessage(chip.dataset.msg));
+});
+
+chatSendBtn?.addEventListener("click", () => sendMessage(chatInput?.value ?? ""));
+chatInput?.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") sendMessage(chatInput.value);
+});
+
+const chatResetBtn = document.querySelector("#chatResetBtn");
+
+function resetChat() {
+  if (!chatMessages || !chatIntro) return;
+  chatMessages.innerHTML = "";
+  chatMessages.hidden = true;
+  chatIntro.hidden = false;
+  if (chatInput) chatInput.value = "";
+  chatResetBtn.hidden = true;
+}
+
+chatResetBtn?.addEventListener("click", resetChat);
 
 detailButtons.forEach((button) => {
   button.addEventListener("click", () => {
