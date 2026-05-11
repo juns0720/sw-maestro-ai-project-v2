@@ -4,7 +4,7 @@
 
 ## 체크리스트
 
-- [ ] **BOOT-000** 공용 셋업 — [docs/steps/boot/BOOT-000.md](../steps/boot/BOOT-000.md)
+- [x] **BOOT-000** 공용 셋업 — [docs/steps/boot/BOOT-000.md](../steps/boot/BOOT-000.md)
   - `docker-compose.yml` 작성
   - `.env.example` 작성 (4개 영역: 루트/backend/ai/frontend)
   - `docs/contracts/` 동결 (openapi.yaml / python-ai.yaml / sse-events.md / db-init.sql / json-schemas/)
