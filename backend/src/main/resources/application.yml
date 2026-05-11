@@ -1,0 +1,21 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/newspick
+    username: ${DB_USER:newspick}
+    password: ${DB_PASSWORD:newspick}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.format_sql: true
+  flyway:
+    enabled: true
+    baseline-on-migrate: true
+
+newspick:
+  ai-service:
+    base-url: ${AI_SERVICE_URL:http://localhost:8000}
+    timeout-seconds: 120
+
+server:
+  port: 8080

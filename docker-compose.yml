@@ -1,0 +1,21 @@
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    container_name: newspick-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME:-newspick}
+      POSTGRES_USER: ${DB_USER:-newspick}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-newspick}
+    ports:
+      - "5432:5432"
+    volumes:
+      - newspick_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-newspick} -d ${DB_NAME:-newspick}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  newspick_pgdata:
