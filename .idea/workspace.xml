@@ -5,16 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="0d4a304a-8c44-4873-a040-5e7f71fb1775" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/assets/newspick.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/button-variants.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/design-canvas.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/ios-frame.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/preview.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/report-variations.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/report-variations.jsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/script.js" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CLAUDE.md" beforeDir="false" afterPath="$PROJECT_DIR$/CLAUDE.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -24,21 +16,24 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "juns0720"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;juns0720&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings"><![CDATA[{
   "selectedUrlAndAccountId": {
     "url": "https://github.com/juns0720/sw-maestro-ai-project-v2.git",
-    "accountId": "77c55285-1e6f-481b-b654-83db735da8de"
+    "accountId": "265f18e1-8041-4a62-904b-b9ce65e7f781"
   }
 }]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 1
-}]]></component>
+  <component name="PackageJsonUpdateNotifier">
+    <dismissed value="$PROJECT_DIR$/frontend/package.json" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 1
+}</component>
   <component name="ProjectId" id="3DXLAuRoDmUBjBSqTGJk0fv8S5e" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -47,7 +42,7 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "feat/boot-000-bootstrap",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/juns0720/Desktop/sw-maestro-ai-project-v2",
     "node.js.detected.package.eslint": "true",
@@ -75,6 +70,7 @@
       <option name="presentableId" value="Default" />
       <updated>1778423328598</updated>
       <workItem from="1778423329432" duration="2506000" />
+      <workItem from="1778461320208" duration="3662000" />
     </task>
     <servers />
   </component>
